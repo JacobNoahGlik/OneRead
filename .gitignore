@@ -1,0 +1,9 @@
+.gradle/
+build/
+**/build/
+*.log
+*.iml
+.out/
+.env
+server/oneread.db
+server/keyset.json
