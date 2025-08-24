@@ -13,7 +13,7 @@ OneRead/
 ├─ server/
 │ ├─ build.gradle.kts
 │ └─ src/
-│ ├─ main/kotlin/com/secretdrop/
+│ ├─ main/kotlin/com/oneread/
 │ │ ├─ Server.kt
 │ │ ├─ Config.kt
 │ │ ├─ crypto/Crypto.kt
@@ -21,10 +21,10 @@ OneRead/
 │ │ ├─ db/Secrets.kt
 │ │ └─ routes/SecretRoutes.kt
 │ └─ main/resources/logback.xml
-│ └─ test/kotlin/com/secretdrop/
+│ └─ test/kotlin/com/oneread/
 │ ├─ SecretRoutesTest.kt
 │ └─ CryptoTest.kt
 └─ client/
 ├─ build.gradle.kts
-└─ src/main/kotlin/com/secretdrop/Client.kt
+└─ src/main/kotlin/com/oneread/Client.kt
 ```
