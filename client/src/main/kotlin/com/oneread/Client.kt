@@ -19,46 +19,46 @@ import kotlinx.serialization.json.Json
 
 
 suspend fun put(host: String, text: String, ttl: Long?): String {
-val client = HttpClient(CIO) { install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) } }
-client.use {
-val resp: CreateSecretResponse = it.post("$host/secret") {
-contentType(ContentType.Application.Json)
-setBody(CreateSecretRequest(text, ttl))
-}.body()
-return resp.token
-}
+    val client = HttpClient(CIO) { install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) } }
+    client.use {
+        val resp: CreateSecretResponse = it.post("$host/secret") {
+            contentType(ContentType.Application.Json)
+            setBody(CreateSecretRequest(text, ttl))
+        }.body()
+        return resp.token
+    }
 }
 
 
 suspend fun get(host: String, token: String): String {
-val client = HttpClient(CIO) { install(ContentNegotiation) { json() } }
-client.use { return it.get("$host/secret/$token").body<GetSecretResponse>().secret }
+    val client = HttpClient(CIO) { install(ContentNegotiation) { json() } }
+    client.use { return it.get("$host/secret/$token").body<GetSecretResponse>().secret }
 }
 
 
 suspend fun main(args: Array<String>) {
-if (args.isEmpty()) {
-println("Usage: client put <HOST> <FILE|-> [ttlSeconds] | client get <HOST> <TOKEN>")
-return
-}
-when (args[0]) {
-"put" -> {
-val host = args.getOrNull(1) ?: error("missing host, e.g. http://localhost:8080")
-val path = args.getOrNull(2) ?: "-"
-val ttl = args.getOrNull(3)?.toLong()
-val data = if (path == "-") {
-generateSequence(::readLine).joinToString("\n")
-} else {
-Files.readString(Path.of(path))
-}
-val token = put(host, data, ttl)
-println(token)
-}
-"get" -> {
-val host = args.getOrNull(1) ?: error("missing host")
-val token = args.getOrNull(2) ?: error("missing token")
-println(get(host, token))
-}
-else -> println("unknown command: ${args[0]}")
-}
+    if (args.isEmpty()) {
+        println("Usage: client put <HOST> <FILE|-> [ttlSeconds] | client get <HOST> <TOKEN>")
+        return
+    }
+    when (args[0]) {
+        "put" -> {
+        val host = args.getOrNull(1) ?: error("missing host, e.g. http://localhost:8080")
+        val path = args.getOrNull(2) ?: "-"
+        val ttl = args.getOrNull(3)?.toLong()
+        val data = if (path == "-") {
+            generateSequence(::readLine).joinToString("\n")
+        } else {
+            Files.readString(Path.of(path))
+        }
+        val token = put(host, data, ttl)
+        println(token)
+        }
+        "get" -> {
+            val host = args.getOrNull(1) ?: error("missing host")
+            val token = args.getOrNull(2) ?: error("missing token")
+            println(get(host, token))
+        }
+        else -> println("unknown command: ${args[0]}")
+    }
 }
