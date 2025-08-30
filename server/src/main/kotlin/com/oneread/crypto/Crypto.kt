@@ -12,16 +12,16 @@ import java.nio.file.Path
 
 
 object Crypto {
-init { AeadConfig.register() }
-
-
-fun loadOrCreateAead(keysetPath: Path): Aead {
-if (!Files.exists(keysetPath)) {
-Files.createDirectories(keysetPath.parent ?: Path.of("."))
-val handle = KeysetHandle.generateNew(KeyTemplates.get("AES256_GCM"))
-handle.write(JsonKeysetWriter.withPath(keysetPath), /* masterKey = */ null)
-}
-val handle = KeysetHandle.read(JsonKeysetReader.withPath(keysetPath), /* masterKey = */ null)
-return handle.getPrimitive(Aead::class.java)
-}
+    init { AeadConfig.register() }
+    
+    
+    fun loadOrCreateAead(keysetPath: Path): Aead {
+        if (!Files.exists(keysetPath)) {
+            Files.createDirectories(keysetPath.parent ?: Path.of("."))
+            val handle = KeysetHandle.generateNew(KeyTemplates.get("AES256_GCM"))
+            handle.write(JsonKeysetWriter.withPath(keysetPath), /* masterKey = */ null)
+        }
+        val handle = KeysetHandle.read(JsonKeysetReader.withPath(keysetPath), /* masterKey = */ null)
+        return handle.getPrimitive(Aead::class.java)
+    }
 }
